@@ -44,6 +44,7 @@ head(df)
 
 hist(df$steps, main = "Total steps by day", xlab = "day", col = "green")
 ```
+![Sample panel plot](figure/Rplot1.png) 
 
 # What is the mean total number of steps taken per day?
 Calculate the mean of the steps per day
