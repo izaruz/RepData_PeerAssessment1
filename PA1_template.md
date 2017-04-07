@@ -11,7 +11,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## R Markdown
 
-## Loading and preprocessing the data
+# Loading and preprocessing the data
 
 Read the data file in.
 ```{r readfile}
@@ -25,6 +25,20 @@ Sum the number of steps per day
 ```{r summarize/day}
 StepsTotal <- aggregate(steps ~ date, data = activity, sum, na.rm = TRUE)
 
+hist(StepsTotal$steps, main = "Total steps by day", xlab = "day", col = "red")
+```
+![Sample panel plot](figure/Rplot1.png)
+
+And the mean and median is
+```{r mean and median}
+mean(StepsTotal$steps)
+## [1] 10766
+median(StepsTotal$steps)
+## [1] 10765
+```
+
+The second approach is to make a data frame first with the values that I need I create a data frame with the days and the total of steps by day
+```{r day/steps}
 steps <- rep(NA, 61)
 day <- rep("NA", 61)
 stepsday <- tapply(activity$steps, activity$date, sum, na.rm = T)
@@ -44,7 +58,7 @@ head(df)
 
 hist(df$steps, main = "Total steps by day", xlab = "day", col = "green")
 ```
-![Sample panel plot](figure/Rplot1.png) 
+![Sample panel plot](figure/Rplot2.png) 
 
 # What is the mean total number of steps taken per day?
 Calculate the mean of the steps per day
@@ -58,7 +72,7 @@ median(StepsTotal$steps)
 ## [1] 10765
 ```
 
-#What is the average daily activity pattern?
+# What is the average daily activity pattern?
 
 Get the average steps per 5 minute interval
 ```{r avg_5_min}
@@ -70,6 +84,7 @@ plot(row.names(time_series), time_series, type = "l", xlab = "5-min interval",
      ylab = "Average across all Days", main = "Average number of steps taken", 
      col = "red")
 ```
+![Sample panel plot](figure/Rplot3.png) 
 
 On average, which interval during the day has the most steps.
 ```{r max_interval}
@@ -78,7 +93,7 @@ names(max_interval)
 ## [1] "835"
 ```
 
-#Imputing missing values
+# Imputing missing values
 
 How many NAs are there in the original table?
 ```{r NAs}
@@ -114,6 +129,7 @@ new_activity$steps <- fillNA
 StepsTotal2 <- aggregate(steps ~ date, data = new_activity, sum, na.rm = TRUE)
 hist(StepsTotal2$steps, main = "Total steps by day", xlab = "day", col = "red")
 ```
+![Sample panel plot](figure/Rplot4.png) 
 
 It looks like the imputing of NA values increases the middle bar (mean/median) height, but other bars seem unchanged.
 
@@ -132,7 +148,7 @@ median(StepsTotal2$steps)
 It looks like the mean did not change, but the median took on the value of the mean, now that some non-integer values were plugged in. 
 
 
-#Are there differences in activity patterns between weekdays and weekends?
+# Are there differences in activity patterns between weekdays and weekends?
 Regenerate steps_filled, and flag whether a date is a weekend or a weekday.
 Convert resulting column to factor.
 ```{r fill_weekdays}
@@ -159,3 +175,5 @@ names(stepsByDay) <- c("interval", "daylevel", "steps")
 
 Plot the weekend and weekday results in a panel plot.
 ```{r day_type_plot}
+```
+![Sample panel plot](figure/Rplot5.png) 
